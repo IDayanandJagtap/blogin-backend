@@ -52,7 +52,7 @@ router.post(
             };
 
             const token = jwt.sign(tokenData, JWT_SECRET_KEY);
-            res.status(200).send({ success: true, message: token });
+            res.status(200).send({ success: true, data: token });
         } catch (err) {
             res.status(500).send({
                 success: false,
@@ -105,11 +105,11 @@ router.post(
             };
 
             const jsonToken = jwt.sign(tokenData, JWT_SECRET_KEY);
-            res.status(200).send({ success: true, message: jsonToken });
+            res.status(200).send({ success: true, data: jsonToken });
         } catch (err) {
             res.status(500).send({
                 success: false,
-                error: "Something went wrong!",
+                error: err.message,
             });
         }
     }
@@ -128,7 +128,7 @@ router.get("/getuser", fetchUser, async (req, res) => {
         const userId = req.user.id;
 
         const user = await User.findOne({ _id: userId }).select("-password");
-        res.status(200).send({ success: true, message: user });
+        res.status(200).send({ success: true, data: user });
     } catch (err) {
         res.status(500).send({
             success: false,
