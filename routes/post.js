@@ -13,7 +13,7 @@ router.post("/newpost", fetchUser, async (req, res) => {
     }
     try {
         const user_id = req.user.id;
-        const { title, description } = req.body;
+        const { title, description, createdAt } = req.body;
 
         const user = await User.findById(user_id);
 
@@ -22,6 +22,7 @@ router.post("/newpost", fetchUser, async (req, res) => {
             author: user.name,
             title: title,
             description: description,
+            createdAt: createdAt,
         };
 
         const post = await Posts.create(data);
