@@ -40,7 +40,12 @@ router.post("/newpost", fetchUser, async (req, res) => {
 // Get all posts
 router.get("/posts", async (req, res) => {
     try {
-        const posts = await Posts.find({});
+        const page = req.query.page ? parseInt(req.query.page) : 1;
+        const perPage = req.query.perPage ? parseInt(req.query.perPage) : 5;
+        const sort = { createdAt: -1 };
+        const skip = (page - 1) * perPage; // skip first entries
+
+        const posts = await Posts.find({}).sort(sort).skip(skip).limit(perPage);
         if (!posts) {
             res.status(404).send({ success: false, error: "No data found !" });
             return;
