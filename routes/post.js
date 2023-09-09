@@ -120,9 +120,9 @@ router.put("/comment", fetchUser, async (req, res) => {
 router.get("/view-post/:id", async (req, res) => {
     try {
         const post_id = req.params.id;
-        const post = await Posts.findById(id);
+        const post = await Posts.findById(post_id);
 
-        const comments = await Comments.find({ post_id: post_id });
+        const comments = (await Comments.find({ post_id: post_id })) || null;
 
         res.status(200).send({
             success: true,
