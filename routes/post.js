@@ -133,6 +133,28 @@ router.get("/view-post/:id", async (req, res) => {
     }
 });
 
+// Delete a post :
+router.delete("/delete/:id", fetchUser, async (req, res) => {
+    if (!req.user) {
+        res.status(401).send({
+            success: false,
+            payload: "Unauthorized user !",
+        });
+        return;
+    }
+    try {
+        const id = req.params.id;
+
+        const response = await Posts.findByIdAndDelete(id);
+        res.status(200).send({
+            success: true,
+            payload: "Post deleted successfully !",
+        });
+    } catch (err) {
+        res.status(500).send({ success: false, payload: err.message });
+    }
+});
+
 module.exports = router;
 /*
 100 -> continue
