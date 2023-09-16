@@ -80,6 +80,23 @@ router.get("/my-posts", fetchUser, async (req, res) => {
     }
 });
 
+// Search posts
+router.get("/search", async (req, res) => {
+    try {
+        const userQuery = req.query.query;
+        // If your search isn't working here's the problem ... create a new index {"title": "text"}
+        const query = {
+            $text: { $search: userQuery },
+        };
+
+        const response = await Posts.find(query);
+
+        res.status(200).send({ success: true, payload: response });
+    } catch (err) {
+        res.status(200).send({ success: false, error: err.message });
+    }
+});
+
 // Comments on a post :
 router.post("/comment", fetchUser, async (req, res) => {
     if (!req.user) {
